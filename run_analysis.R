@@ -32,7 +32,12 @@ data$subject <- as.factor(data$subject)
 
 data1 <- data[, c(TRUE, TRUE, (grepl("\\<mean\\>", features[,2]) | grepl("\\<std\\>", features[,2])))]
 tidy_data <- melt(data1, id.vars=c("subject", "activity"), measure.vars=colnames(data1)[-(1:2)])
+write.csv(tidy_data, "tidy_data_mean_std.csv")
 
+
+## Independent tidy data set with the average of each variable for each activity and each subject.
 
 tidy_data2 <- sapply(split(data[,-(1:2)], list(data$subject, data$activity)), FUN=colMeans)
 tidy_data2 <- melt(tidy_data2, id.var=c(colnames(tidy_data2), rownames(tidy_data2)))
+colnames(tidy_data2) <- c("variable", "subject_activity", "value")
+write.csv(tidy_data2, "tidy_data_average.csv")
